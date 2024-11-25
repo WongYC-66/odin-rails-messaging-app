@@ -2,13 +2,14 @@ import React from "react";
 import { redirect, useLoaderData, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 
-import Tab from './pages/Tab.jsx'
-import WindowSkel from './pages/WindowSkel.jsx'
-import WindowChat from './pages/WindowChat.jsx'
-import WindowProfile from './pages/WindowProfile.jsx'
-import WindowProfileEdit from './pages/WindowProfileEdit.jsx'
-import { UserContext } from './layout/layout.jsx'
-import API_URL from "./layout/API_URL.jsx"
+import Tab from '../pages/Tab.jsx'
+import WindowSkel from '../pages/WindowSkel.jsx'
+import WindowChat from '../pages/WindowChat.jsx'
+import WindowProfile from '../pages/WindowProfile.jsx'
+import WindowProfileEdit from '../pages/WindowProfileEdit.jsx'
+
+import { UserContext } from '../layout/Layout.jsx'
+import API_URL from "../layout/API_URL.jsx"
 
 export default function App() {
 
