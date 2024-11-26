@@ -24,17 +24,17 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_26_172640) do
   end
 
   create_table "chats", force: :cascade do |t|
-    t.string "name"
-    t.boolean "isGroupChat"
-    t.datetime "lastUpdatedAt"
+    t.string "name", default: ""
+    t.boolean "isGroupChat", default: false
+    t.datetime "lastUpdatedAt", default: "2024-11-26 18:30:36"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "messages", force: :cascade do |t|
-    t.string "text"
-    t.bigint "user_id"
-    t.bigint "chat_id"
+    t.string "text", null: false
+    t.bigint "user_id", null: false
+    t.bigint "chat_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["chat_id"], name: "index_messages_on_chat_id"
