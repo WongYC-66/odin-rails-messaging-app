@@ -1,4 +1,6 @@
-# 
+# todo
+
+1. setup many-to-many relationship - Users - Chats
 
 
 # Thanks

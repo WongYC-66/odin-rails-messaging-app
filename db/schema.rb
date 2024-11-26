@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_26_160453) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_26_172640) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "chat_participants", force: :cascade do |t|
+    t.bigint "chat_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_chat_participants_on_chat_id"
+    t.index ["user_id"], name: "index_chat_participants_on_user_id"
+  end
 
   create_table "chats", force: :cascade do |t|
     t.string "name"
