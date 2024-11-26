@@ -58,3 +58,10 @@ group :development do
   gem "web-console"
 end
 
+gem "devise"
+gem "devise-jwt"
+gem "jsonapi-serializer"
+
+gem "dotenv", groups: [ :development, :test ]
+
+gem "faker"

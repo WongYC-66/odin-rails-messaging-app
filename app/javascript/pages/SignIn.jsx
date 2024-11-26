@@ -32,8 +32,8 @@ export default function SignIn() {
 
             {/* Visitor Log-in Feature */}
             <Form method="POST" className="d-inline-block">
-                <input type="text" name='username' defaultValue="guest" hidden/>
-                <input type="password" name="password" defaultValue="guest" hidden/>
+                <input type="text" name='username' defaultValue="guest" hidden />
+                <input type="password" name="password" defaultValue="123456" hidden />
                 <button type="submit" className="btn btn-primary my-3">or Guest Login</button>
             </Form>
 
@@ -54,26 +54,26 @@ export async function action({ request }) {
     const userInfo = Object.fromEntries(formData);
 
     const myHeaders = new Headers();
+    const token = document.querySelector('meta[name="csrf-token"]').content
     myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("X-CSRF-Token", token);
 
-    const response = await fetch(`${API_URL}/users/sign-in/`, {
+    const response = await fetch(`${API_URL}/users/sign_in/`, {
         method: "POST",
         headers: myHeaders,
-        body: JSON.stringify(userInfo),
+        body: JSON.stringify({ user: userInfo }),
     });
 
-    let data = await response.json()
+    let { status } = await response.json()
 
-    if (data && data.token) {
+    // valid
+    if (status.data?.user) {
         localStorage.setItem('user', JSON.stringify({
-            username: userInfo.username,
-            token: data.token
+            username: status.data.user.username,
         }))
         return redirect('/')
     }
 
     // Return the error data instead of redirecting, capturable at useActionData
-    return {
-        error: data.error || 'Unknown error occurred'
-    };
+    return { error: status.message || 'Unknown error occurred' }
 }

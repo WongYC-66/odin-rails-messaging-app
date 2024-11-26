@@ -1,4 +1,15 @@
 Rails.application.routes.draw do
+  # devise_for :users
+  devise_for :users, path: "", path_names: {
+    sign_in: "/users/sign_in",
+    sign_out: "/users/logout",
+    registration: "/users/sign_up"
+  },
+  controllers: {
+    sessions: "users/sessions",
+    registrations: "users/registrations"
+  }
+
   root "homepage#index"
   get "/*path" => "homepage#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
