@@ -10,23 +10,27 @@ export const UserContext = createContext(null);
 export default function Layout() {
     const navigate = useNavigate();
     const [user, setUser] = useState(null)
-
+    
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user'));
         setUser(user)
     }, [])
-
+    
     const logOutButtonClick = async () => {
-
+        const user = JSON.parse(localStorage.getItem('user'));
+        const token = user.token
+        
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", `Bearer ${token}`);
 
-        const response = await fetch(`${API_URL}/users/sign-out/`, {
+        const response = await fetch(`${API_URL}/users/sign_out/`, {
             method: "GET",
             headers: myHeaders,
         });
 
         const data = await response.json()
+        console.log(data)
 
         localStorage.removeItem('user')
         setUser(null)

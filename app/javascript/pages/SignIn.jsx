@@ -64,12 +64,15 @@ export async function action({ request }) {
         body: JSON.stringify({ user: userInfo }),
     });
 
+    
     let { status } = await response.json()
-
+    
     // valid
     if (status.data?.user) {
+        const jwt = response.headers.get("Authorization").split(" ")[1]; // Extract Bearer token
         localStorage.setItem('user', JSON.stringify({
             username: status.data.user.username,
+            token: jwt
         }))
         return redirect('/')
     }

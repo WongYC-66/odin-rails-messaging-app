@@ -56,29 +56,32 @@ export async function loader() {
   myHeaders.append("Authorization", `Bearer ${token}`);
 
   const fetchAllChat = async () => {
-    const response = await fetch(`${API_URL}/chats/`, {
+    const response = await fetch(`${API_URL}/api/v1/chats/`, {
       method: "GET",
       headers: myHeaders,
     })
 
-    const data = await response.json()
-    if (data && data.allChats)
-      return data.allChats
+    const { status } = await response.json()
+    console.log(status.data.allChats)
+
+    if (status && status.data?.allChats)
+      return status.data?.allChats
 
     console.error('fetch chats failed ...')
     return []
   }
 
   const fetchAllProfile = async () => {
-    const response = await fetch(`${API_URL}/users/profile/`, {
+    const response = await fetch(`${API_URL}/api/v1/users/`, {
       method: "GET",
       headers: myHeaders,
     })
 
+    const { status } = await response.json()
+    // console.log(status.data.allUsers)
 
-    const data = await response.json()
-    if (data && data.allUsers)
-      return data.allUsers
+    if (status && status.data?.allUsers)
+      return status.data?.allUsers
 
     console.error('fetch profiles failed ...')
     return []
