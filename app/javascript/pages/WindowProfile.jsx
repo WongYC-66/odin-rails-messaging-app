@@ -120,17 +120,19 @@ export async function loader({ params }) {
         myHeaders.append("Authorization", `Bearer ${token}`);
 
 
-        const response = await fetch(`${API_URL}/users/profile/${username}`, {
+        const response = await fetch(`${API_URL}/api/v1/users/${username}`, {
             method: "GET",
             headers: myHeaders,
         })
 
-        const data = await response.json()
-        if (data && data.queryUser)
-            return data.queryUser
+        const { status } = await response.json()
+        // console.log(status.data.allUsers)
+    
+        if (status && status.data?.queryUser)
+          return status.data?.queryUser
 
         console.error('fetch profile by username failed ...')
-        return []
+        return {}
     }
 
     const [{ allChat, allProfile }, userProfile] = await Promise.all([AppLoader(), fetchUserProfile()])

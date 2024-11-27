@@ -20,6 +20,20 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def show
+    if hasValidJWT
+      query_user = User.find_by(username: params[:username])
+      render json: {
+        status: {
+          code: 200, message: "getting one user by username : #{params[:username]}",
+          data: { queryUser: query_user }
+        }
+      }, status: :ok
+    else
+      render json: {
+        status: 401,
+        message: "Invalid JWT."
+      }, status: :unauthorized
+    end
   end
 
   def update
