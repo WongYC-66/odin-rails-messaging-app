@@ -65,7 +65,7 @@ export async function loader() {
     console.log(status.data.allChats)
 
     if (status && status.data?.allChats)
-      return status.data?.allChats
+      return status.data.allChats
 
     console.error('fetch chats failed ...')
     return []

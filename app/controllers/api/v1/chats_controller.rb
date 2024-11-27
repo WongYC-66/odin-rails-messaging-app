@@ -3,10 +3,10 @@ class Api::V1::ChatsController < ApplicationController
 
   def index
     if hasValidJWT
-      all_chats = Chats.all
+      all_chats = Chat.joins(:users).where(users: { id: current_user.id }).distinct
       render json: {
         status: {
-          code: 200, message: "Retrieve all profiles successfully.",
+          code: 200, message: "Retrieve all chats where user involved successfully.",
           data: { allChats: all_chats }
         }
       }, status: :ok
@@ -22,6 +22,20 @@ class Api::V1::ChatsController < ApplicationController
   end
 
   def show
+    if hasValidJWT
+      chat = Chat.find_by(id: params[:chat_id])
+      render json: {
+        status: {
+          code: 200, message: "Retrieve one chat successfully.",
+          data: { chat: chat }
+        }
+      }, status: :ok
+    else
+      render json: {
+        status: 401,
+        message: "Invalid JWT."
+      }, status: :unauthorized
+    end
   end
 
   def update

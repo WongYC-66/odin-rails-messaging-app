@@ -10,4 +10,15 @@ class User < ApplicationRecord
 
   has_many :chat_participants
   has_many :chats, through: :chat_participants
+
+  def as_json(_options = {})
+    {
+      id: self.id,
+      username: self.username,
+      firstName: self.firstname,
+      lastName: self.lastname,
+      lastLoginAt: self.lastloginat,
+      email: self.email
+     }  # NOT including the email field
+  end
 end

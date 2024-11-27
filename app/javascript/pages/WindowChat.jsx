@@ -34,8 +34,8 @@ export default function WindowChat() {
             {chatsInfo &&
                 < div className="flex-fill border border-1 d-flex flex-column p-3">
                     {/* Chat target / Group Name */}
-                    <div className="d-flex justify-content-around align-items-center text-center bg-primary text-white py-1"> 
-                        <UserListModal allProfile={chatsInfo.users}/>
+                    <div className="d-flex justify-content-around align-items-center text-center bg-primary text-white py-1">
+                        <UserListModal allProfile={chatsInfo.users} />
                         <h4>{roomName}</h4>
                         {!chatsInfo.isGroupChat && <LastLoginDot user={oppositeUser} />}
                     </div>
@@ -97,14 +97,16 @@ export async function loader({ params }) {
         myHeaders.append("Authorization", `Bearer ${token}`);
 
 
-        const response = await fetch(`${API_URL}/chats/${chat_id}`, {
+        const response = await fetch(`${API_URL}/api/v1/chats/${chat_id}`, {
             method: "GET",
             headers: myHeaders,
         })
 
-        const data = await response.json()
-        if (data && data.chat)
-            return data.chat
+        const { status } = await response.json()
+        console.log(status.data?.chat)
+
+        if (status && status.data?.chat)
+            return status.data.chat
 
         console.error('fetch chat by chat_id failed ...')
         return []

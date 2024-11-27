@@ -3,7 +3,8 @@ class Api::V1::UsersController < ApplicationController
 
   def index
     if hasValidJWT
-      all_users = User.select(:id, :firstname, :lastname, :username, :lastloginat)
+      # all_users = User.select(:id, :firstname, :lastname, :username, :lastloginat)
+      all_users = User.all
       render json: {
         status: {
           code: 200, message: "Retrieve all profiles successfully.",
