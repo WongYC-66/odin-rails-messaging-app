@@ -39,20 +39,29 @@ class Users::SessionsController < Devise::SessionsController
       else
         render json: {
           status: 401,
-          message: "Couldn't find an active session."
+          message: "Invalid JWT."
         }, status: :unauthorized
       end
     end
 
     def hasValidJWT
-      if request.headers["Authorization"].present?
-        jwt_payload = JWT.decode(
-            request.headers["Authorization"].split(" ").last,
-            ENV["devise_jwt_secret_key"]
-          ).first
-        current_user = User.find(jwt_payload["sub"])
+      begin
+        # Ensure the Authorization header is present and formatted correctly
+        if request.headers["Authorization"].present?
+          token = request.headers["Authorization"].split(" ").last
+          return false if token.blank?
+
+          # Attempt to decode the JWT token
+          jwt_payload = JWT.decode(token, ENV["devise_jwt_secret_key"]).first
+
+          # Find the user based on the decoded payload
+          current_user = User.find_by(id: jwt_payload["sub"])
+          return current_user.present?
+        end
+        false
+      rescue
+        false
       end
-      current_user.present?
     end
 
   # protected

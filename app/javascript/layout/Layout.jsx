@@ -10,16 +10,16 @@ export const UserContext = createContext(null);
 export default function Layout() {
     const navigate = useNavigate();
     const [user, setUser] = useState(null)
-    
+
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user'));
         setUser(user)
     }, [])
-    
+
     const logOutButtonClick = async () => {
         const user = JSON.parse(localStorage.getItem('user'));
         const token = user.token
-        
+
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization", `Bearer ${token}`);
@@ -29,8 +29,12 @@ export default function Layout() {
             headers: myHeaders,
         });
 
-        const data = await response.json()
-        console.log(data)
+        try {
+            const data = await response.json()
+            console.log(data)
+        } catch {
+
+        }
 
         localStorage.removeItem('user')
         setUser(null)

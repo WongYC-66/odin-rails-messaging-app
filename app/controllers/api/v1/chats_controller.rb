@@ -1,13 +1,13 @@
-class Api::V1::UsersController < ApplicationController
+class Api::V1::ChatsController < ApplicationController
   respond_to :json
 
   def index
     if hasValidJWT
-      all_users = User.select(:id, :firstname, :lastname, :username, :lastloginat)
+      all_chats = Chats.all
       render json: {
         status: {
           code: 200, message: "Retrieve all profiles successfully.",
-          data: { allUsers: all_users }
+          data: { allChats: all_chats }
         }
       }, status: :ok
     else
@@ -16,6 +16,9 @@ class Api::V1::UsersController < ApplicationController
         message: "Invalid JWT."
       }, status: :unauthorized
     end
+  end
+
+  def create
   end
 
   def show

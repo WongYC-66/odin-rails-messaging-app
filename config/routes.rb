@@ -2,6 +2,11 @@ Rails.application.routes.draw do
   # user api
   namespace :api do
     namespace :v1 do
+      get "/chats/", to: "chats#index"
+      post "/chats/", to: "chats#create"
+      get "/chats/:chat_id", to: "chats#show"
+      put "/chats/:chat_id", to: "chats#update"
+
       get "/users/", to: "users#index"
       get "/users/:username", to: "users#show"
       put "/users/:username", to: "users#update"
