@@ -54,9 +54,9 @@ export async function action({ request }) {
     const userInfo = Object.fromEntries(formData);
 
     const myHeaders = new Headers();
-    const token = document.querySelector('meta[name="csrf-token"]').content
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content
     myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("X-CSRF-Token", token);
+    myHeaders.append("X-CSRF-Token", csrfToken);
 
     const response = await fetch(`${API_URL}/users/sign_in/`, {
         method: "POST",

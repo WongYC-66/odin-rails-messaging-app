@@ -129,23 +129,24 @@ export async function action({ request, params }) {
     const token = user.token
 
     const myHeaders = new Headers();
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${token}`);
+    myHeaders.append("X-CSRF-Token", csrfToken);
 
-    const response = await fetch(`${API_URL}/chats/${chat_id}/`, {
-        method: "POST",
+    const response = await fetch(`${API_URL}/api/v1/chats/${chat_id}/`, {
+        method: "PUT",
         headers: myHeaders,
         body: JSON.stringify(messageInfo),
     });
 
-    let data = await response.json()
-
+    
     // clear textarea input
     document.getElementById('textInput').value = ""
-
-    if (data && data.chat) {
+    
+    let {status} = await response.json()
+    if (status && status.data?.chat)
         return redirect(`/chat/${chat_id}`);
-    }
 
     // Return the error data instead of redirecting, capturable at useActionData
     return {

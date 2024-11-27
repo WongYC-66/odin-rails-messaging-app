@@ -39,6 +39,29 @@ class Api::V1::ChatsController < ApplicationController
   end
 
   def update
+    if !hasValidJWT
+      return render json: {
+        status: 401,
+        message: "Invalid JWT."
+      }, status: :unauthorized
+    end
+
+    chat = Chat.find_by(id: params[:chat_id])
+    if chat && chat.users.include?(current_user)
+        new_message = current_user.messages.create(text: params[:text])
+        chat.messages << new_message
+        render json: {
+        status: {
+          code: 200, message: "post one new message by chatId : #{params[:chat_id]}",
+          data: { chat: chat }
+        }
+    }, status: :ok
+    else
+        render json: {
+        status: 401,
+        message: "Chat not found or un-Authorized."
+      }, status: :unauthorized
+    end
   end
 
   private
