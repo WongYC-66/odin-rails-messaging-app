@@ -86,17 +86,19 @@ export async function loader({ params }) {
     myHeaders.append("Authorization", `Bearer ${token}`);
 
     const fetchUserProfile = async () => {
-        const response = await fetch(`${API_URL}/users/profile/${username}`, {
+        const response = await fetch(`${API_URL}/api/v1/users/${username}`, {
             method: "GET",
             headers: myHeaders,
         })
 
-        const data = await response.json()
-        if (data && data.queryUser)
-            return data.queryUser
+        const { status } = await response.json()
+        // console.log(status.data.allUsers)
+    
+        if (status && status.data?.queryUser)
+          return status.data?.queryUser
 
         console.error('fetch profile by username failed ...')
-        return []
+        return {}
     }
 
     const [{ allChat, allProfile }, userEditProfile] = await Promise.all([AppLoader(), fetchUserProfile()])
@@ -111,20 +113,22 @@ export async function action({ request }) {
     const token = user.token
 
     const myHeaders = new Headers();
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${token}`);
+    myHeaders.append("X-CSRF-Token", csrfToken);
 
-    const response = await fetch(`${API_URL}/users/profile/${user.username}/`, {
+    const response = await fetch(`${API_URL}/api/v1/users/${user.username}/`, {
         method: "PUT",
         headers: myHeaders,
         body: JSON.stringify(userInfo),
     });
 
-    let data = await response.json()
-
-    if (data && data.updatedUser) {
-        return redirect(`/profile/${user.username}`);
-    }
+    
+    let {status} = await response.json()
+    console.log(status)
+    if (status && status.data?.updatedUser)
+        return redirect(`/profile/${user.username}/edit`);
 
     // Return the error data instead of redirecting, capturable at useActionData
     return {

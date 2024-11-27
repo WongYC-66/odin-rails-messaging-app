@@ -37,6 +37,34 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def update
+    if !hasValidJWT
+      return render json: {
+        status: 401,
+        message: "Invalid JWT."
+      }, status: :unauthorized
+    end
+
+    edit_user = User.find_by(username: params[:username])
+    if !edit_user.persisted? || edit_user != current_user
+      render json: {
+        status: 401,
+        message: "User not found or un-Authorized."
+      }, status: :unauthorized
+    end
+
+    edit_user.update(
+      firstname: params[:firstName],
+      lastname: params[:lastName],
+      email: params[:email],
+      description: params[:description],
+    )
+
+    render json: {
+        status: {
+          code: 200, message: "success updating one user by username : #{params[:username]}",
+          data: { updatedUser: edit_user }
+        }
+    }, status: :ok
   end
 
   private

@@ -62,7 +62,7 @@ export async function loader() {
     })
 
     const { status } = await response.json()
-    console.log(status.data.allChats)
+    // console.log(status.data.allChats)
 
     if (status && status.data?.allChats)
       return status.data.allChats
