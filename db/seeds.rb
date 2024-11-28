@@ -33,25 +33,25 @@ end
 
 puts "Creating chats"
 # single chat
-chat1 = Chat.create(name: '', isGroupChat: false)
+chat1 = Chat.create(name: '', isGroupChat: false, lastUpdatedAt: DateTime.now)
 chat1.users << User.find_by(username: usernames[0])
 chat1.users << User.find_by(username: usernames[1])
 chat1.messages << User.find_by(username: usernames[0]).messages.create(text: "hi this is chat1 , posted by admin1")
 
 # single chat
-chat2 = Chat.create(name: '', isGroupChat: false)
+chat2 = Chat.create(name: '', isGroupChat: false, lastUpdatedAt: DateTime.now)
 chat2.users << User.find_by(username: usernames[0])
 chat2.users << User.find_by(username: usernames[3])
 chat2.messages << User.find_by(username: usernames[3]).messages.create(text: "hi this is chat2 , posted by user3")
 
 # single chat
-chat3 = Chat.create(name: '', isGroupChat: false)
+chat3 = Chat.create(name: '', isGroupChat: false, lastUpdatedAt: DateTime.now)
 chat3.users << User.find_by(username: usernames[0])
 chat3.users << User.find_by(username: usernames[1])
 chat3.messages << User.find_by(username: usernames[1]).messages.create(text: "hi this is chat3 , posted by user1")
 
 # group chat
-chat4 = Chat.create(name: 'testing group chat name', isGroupChat: true)
+chat4 = Chat.create(name: 'testing group chat name', isGroupChat: true, lastUpdatedAt: DateTime.now)
 chat4.users << User.find_by(username: usernames[0])
 chat4.users << User.find_by(username: usernames[1])
 chat4.users << User.find_by(username: usernames[2])
@@ -62,7 +62,7 @@ chat4.messages << User.find_by(username: usernames[0]).messages.create(text: "hi
 chat4.messages << User.find_by(username: usernames[1]).messages.create(text: "hi this is groupchat message , posted by user1")
 
 # single chat
-chat5 = Chat.create(name: '', isGroupChat: false)
+chat5 = Chat.create(name: '', isGroupChat: false, lastUpdatedAt: DateTime.now)
 chat5.users << User.find_by(username: usernames[2])
 chat5.users << User.find_by(username: usernames[3])
 chat5.messages << User.find_by(username: usernames[2]).messages.create(text: "hi this is chat5 , posted by user2, admin1 shall have no access")
@@ -71,7 +71,7 @@ chat5.messages << User.find_by(username: usernames[2]).messages.create(text: "hi
 guestUser = User.find_by(username: usernames[-1])
 fiveRandomUsernames = usernames.slice(0 .. -1).shuffle!.slice(0 ... 5)
 fiveRandomUsernames.each do |username|
-  new_chat = Chat.create(name: '', isGroupChat: false)
+  new_chat = Chat.create(name: '', isGroupChat: false, lastUpdatedAt: DateTime.now)
   new_chat.users << guestUser
   new_chat.users << User.find_by(username: username)
   new_chat.messages << User.find_by(username: username).messages.create(text: "hi, im #{username}. How are u?")
@@ -80,7 +80,7 @@ end
 
 # Vistor Group Chat room creating.
 fourRandomUsernames = usernames.slice(0 .. -2).shuffle!.slice(0 ... 4)
-chat12 = Chat.create(name: 'My Friends', isGroupChat: true)
+chat12 = Chat.create(name: 'My Friends', isGroupChat: true, lastUpdatedAt: DateTime.now)
 chat12.users << guestUser
 fourRandomUsernames.each do |username|
   chat12.users << User.find_by(username: username)

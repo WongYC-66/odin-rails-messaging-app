@@ -3,7 +3,19 @@ class Api::V1::ChatsController < ApplicationController
 
   def index
     if hasValidJWT
-      all_chats = Chat.joins(:users).where(users: { id: current_user.id }).distinct
+      all_chats = Chat
+      .joins(:users)
+      .where(users: { id: current_user.id })
+      .distinct
+      .includes(:messages)
+      .order(lastUpdatedAt: :desc)
+      # .includes(:users, :messages)
+
+      # Sort messages dynamically in each chat
+      all_chats.each do |chat|
+        chat.messages = chat.messages.order(created_at: :desc)  # Sort messages by created_at DESC
+      end
+
       render json: {
         status: {
           code: 200, message: "Retrieve all chats where user involved successfully.",
@@ -89,6 +101,7 @@ class Api::V1::ChatsController < ApplicationController
     if chat && chat.users.include?(current_user)
         new_message = current_user.messages.create(text: params[:text])
         chat.messages << new_message
+        chat.update(lastUpdatedAt: DateTime.now)
         render json: {
         status: {
           code: 200, message: "post one new message by chatId : #{params[:chat_id]}",

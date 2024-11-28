@@ -10,13 +10,8 @@ class Chat < ApplicationRecord
       name: self.name,
       isGroupChat: self.isGroupChat,
       lastUpdatedAt: self.lastUpdatedAt,
-      users: users,
-      messages: messages
+      users: self.users,
+      messages: self.messages
     }
-  end
-
-
-  def user_ids_array
-    chat.users.map { |user| user.id }
   end
 end

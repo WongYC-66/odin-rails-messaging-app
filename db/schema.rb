@@ -26,7 +26,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_26_172640) do
   create_table "chats", force: :cascade do |t|
     t.string "name", default: ""
     t.boolean "isGroupChat", default: false
-    t.datetime "lastUpdatedAt", default: "2024-11-28 16:57:50"
+    t.datetime "lastUpdatedAt", default: "2024-11-28 18:31:32"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

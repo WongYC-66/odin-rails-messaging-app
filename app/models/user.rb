@@ -20,6 +20,6 @@ class User < ApplicationRecord
       lastLoginAt: self.lastloginat,
       description: self.description,
       email: self.email
-     }  # NOT including the email field
+     }
   end
 end
