@@ -13,7 +13,7 @@ import API_URL from "../layout/API_URL.jsx"
 
 export default function App() {
 
-  const { setUser } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const { allChat, allProfile } = useLoaderData()
 
   const [userSelection, setUserSelection] = useState({
@@ -29,12 +29,12 @@ export default function App() {
   return (
     <div className="flex-fill h-100 w-100 d-flex justify-content-center">
       {/* Left Window */}
-      <Tab
+      {user && <Tab
         allChat={allChat}
         allProfile={allProfile}
         userSelection={userSelection}
         setUserSelection={setUserSelection}
-      />
+      />}
       {/* Right Window */}
       {userSelection.type === null && <WindowSkel />}
       {userSelection.type === "chat" && <WindowChat />}

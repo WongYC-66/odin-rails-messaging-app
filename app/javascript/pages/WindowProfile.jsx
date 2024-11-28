@@ -31,24 +31,29 @@ export default function WindowProfile(props) {
 
         const myHeaders = new Headers();
         const token = self.token
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content
 
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization", `Bearer ${token}`);
+        myHeaders.append("X-CSRF-Token", csrfToken);
 
         // get self userId first
-        const responseId = await fetch(`${API_URL}/users/profile/${self.username}`, {
+        const responseId = await fetch(`${API_URL}/api/v1/users/${self.username}`, {
             method: "GET",
             headers: myHeaders,
         })
-        const dataId = await responseId.json()
-        if (dataId && dataId.queryUser){
-            var selfUserId = dataId.queryUser.id
+
+        const { status : statusId } = await responseId.json()
+        
+        if (statusId && statusId.data?.queryUser) {
+            var selfUserId = statusId.data.queryUser.id
+            console.log(statusId)
         } else {
-            return console.error(dataId.error)
+            return console.error(statusId.message)
         }
 
         // POST a new chat room
-        const response = await fetch(`${API_URL}/chats/`, {
+        const response = await fetch(`${API_URL}/api/v1/chats/`, {
             method: "POST",
             headers: myHeaders,
             body: JSON.stringify({
@@ -56,17 +61,21 @@ export default function WindowProfile(props) {
                 isGroupChat: false,
             })
         })
-        
+
         // if no error, redirect to corresponding chat window
-        const data = await response.json()
-        if (data && data.chat || data.error == "Chat already existed") {
+
+        const { status } = await response.json()
+        console.log(status)
+        if (status && status.data?.chat) {
+            let chat = status.data.chat
             setUserSelection({
                 type: 'chat',
-                id: data.chat.id,
+                id: chat.id,
             })
-            return navigate(`/chat/${data.chat.id}`);
+            return navigate(`/chat/${chat.id}`);
         }
-        return console.error(data.error)
+
+        return console.error(status.message)
     }
 
     return (
@@ -127,9 +136,9 @@ export async function loader({ params }) {
 
         const { status } = await response.json()
         // console.log(status.data.allUsers)
-    
+
         if (status && status.data?.queryUser)
-          return status.data?.queryUser
+            return status.data?.queryUser
 
         console.error('fetch profile by username failed ...')
         return {}

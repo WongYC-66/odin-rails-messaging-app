@@ -65,3 +65,4 @@ gem "jsonapi-serializer"
 gem "dotenv", groups: [ :development, :test ]
 
 gem "faker"
+gem "hirb"

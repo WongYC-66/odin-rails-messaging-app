@@ -39,6 +39,7 @@ export default function Layout() {
         localStorage.removeItem('user')
         setUser(null)
         navigate('/sign-in')
+        window.location.reload();   // refresh for csrf token
     }
 
     return (

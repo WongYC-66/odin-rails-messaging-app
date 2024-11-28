@@ -19,6 +19,45 @@ class Api::V1::ChatsController < ApplicationController
   end
 
   def create
+    if !hasValidJWT
+      return render json: {
+        status: 401,
+        message: "Invalid JWT."
+      }, status: :unauthorized
+    end
+
+    userIds = params[:userIds].sort
+    is_group_chat = userIds.length <= 2? false : params[:isGroupChat]
+
+    existing_chat = Chat.joins(:users)
+      .where(isGroupChat: false)
+      .group("chats.id")
+      .having("COUNT(users.id) = ?", userIds.length)
+      .where(users: { id: userIds }) #
+
+    existing_chat = existing_chat
+      .to_a
+      .select { |chat| chat.users.pluck(:id).sort == userIds } # Ensures only matching user IDs
+      .first
+
+    if !existing_chat || is_group_chat
+      existing_chat = Chat.create(
+        name: is_group_chat ? params[:groupName] : "",
+        isGroupChat: is_group_chat
+      )
+      # add users
+      userIds.each do |user_id|
+        user = User.find_by(id: user_id)
+        existing_chat.users << user
+      end
+    end
+
+    render json: {
+      status: {
+        code: 200, message: "Chat room created",
+        data: { chat: existing_chat }
+      }
+    }, status: :ok
   end
 
   def show

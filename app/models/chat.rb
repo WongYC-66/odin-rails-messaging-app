@@ -14,4 +14,9 @@ class Chat < ApplicationRecord
       messages: messages
     }
   end
+
+
+  def user_ids_array
+    chat.users.map { |user| user.id }
+  end
 end
