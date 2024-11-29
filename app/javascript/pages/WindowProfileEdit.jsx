@@ -126,7 +126,7 @@ export async function action({ request }) {
 
     
     let {status} = await response.json()
-    console.log(status)
+    // console.log(status)
     if (status && status.data?.updatedUser)
         return redirect(`/profile/${user.username}/edit`);
 

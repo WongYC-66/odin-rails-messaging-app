@@ -31,7 +31,7 @@ export default function Layout() {
 
         try {
             const data = await response.json()
-            console.log(data)
+            // console.log(data)
         } catch {
 
         }

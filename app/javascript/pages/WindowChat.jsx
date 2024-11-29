@@ -103,7 +103,7 @@ export async function loader({ params }) {
         })
 
         const { status } = await response.json()
-        console.log(status.data?.chat)
+        // console.log(status.data?.chat)
 
         if (status && status.data?.chat)
             return status.data.chat

@@ -47,7 +47,7 @@ export default function WindowProfile(props) {
         
         if (statusId && statusId.data?.queryUser) {
             var selfUserId = statusId.data.queryUser.id
-            console.log(statusId)
+            // console.log(statusId)
         } else {
             return console.error(statusId.message)
         }
@@ -65,7 +65,7 @@ export default function WindowProfile(props) {
         // if no error, redirect to corresponding chat window
 
         const { status } = await response.json()
-        console.log(status)
+        // console.log(status)
         if (status && status.data?.chat) {
             let chat = status.data.chat
             setUserSelection({

@@ -11,6 +11,7 @@ class Api::V1::ChatsController < ApplicationController
       .distinct
       .order(lastUpdatedAt: :desc)
 
+      current_user.update_last_login!
       render json: {
         status: {
           code: 200, message: "Retrieve all chats where user involved successfully.",
@@ -32,6 +33,8 @@ class Api::V1::ChatsController < ApplicationController
         message: "Invalid JWT."
       }, status: :unauthorized
     end
+
+    current_user.update_last_login!
 
     userIds = params[:userIds].sort
     is_group_chat = userIds.length <= 2? false : params[:isGroupChat]
@@ -73,6 +76,8 @@ class Api::V1::ChatsController < ApplicationController
        .preload(messages: [ :user ])
        .find_by(id: params[:chat_id])
 
+      current_user.update_last_login!
+
       render json: {
         status: {
           code: 200, message: "Retrieve one chat successfully.",
@@ -100,6 +105,9 @@ class Api::V1::ChatsController < ApplicationController
         new_message = current_user.messages.create(text: params[:text])
         chat.messages << new_message
         chat.update(lastUpdatedAt: DateTime.now)
+
+        current_user.update_last_login!
+
         render json: {
         status: {
           code: 200, message: "post one new message by chatId : #{params[:chat_id]}",

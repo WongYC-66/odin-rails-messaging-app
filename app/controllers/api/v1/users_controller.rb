@@ -5,6 +5,7 @@ class Api::V1::UsersController < ApplicationController
     if hasValidJWT
       # all_users = User.select(:id, :firstname, :lastname, :username, :lastloginat)
       all_users = User.all.filter { |user| user != current_user }
+      current_user.update_last_login!
       render json: {
         status: {
           code: 200, message: "Retrieve all profiles successfully.",
@@ -22,6 +23,7 @@ class Api::V1::UsersController < ApplicationController
   def show
     if hasValidJWT
       query_user = User.find_by(username: params[:username])
+      current_user.update_last_login!
       render json: {
         status: {
           code: 200, message: "getting one user by username : #{params[:username]}",
@@ -58,6 +60,8 @@ class Api::V1::UsersController < ApplicationController
       email: params[:email],
       description: params[:description],
     )
+
+    current_user.update_last_login!
 
     render json: {
         status: {

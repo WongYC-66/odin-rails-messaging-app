@@ -6,6 +6,7 @@ import LastLoginDot from "./LastLoginDot"
 
 export default function ChatCard(props) {
     const chat = props.chat
+    // console.log(chat)
 
     const self = JSON.parse(localStorage.getItem('user'))
 

@@ -16,8 +16,6 @@ export default function App() {
   const { user, setUser } = useContext(UserContext)
   const { allChat, allProfile } = useLoaderData()
 
-  console.log(allChat)
-
   const [userSelection, setUserSelection] = useState({
     type: null,
     id: null,

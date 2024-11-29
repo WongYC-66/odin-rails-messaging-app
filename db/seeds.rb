@@ -69,7 +69,7 @@ chat5.messages << User.find_by(username: usernames[2]).messages.create(text: "hi
 
 # Visitor Chat room creating, visitor index=15,  1-to-1
 guestUser = User.find_by(username: usernames[-1])
-fiveRandomUsernames = usernames.slice(0 .. -1).shuffle!.slice(0 ... 5)
+fiveRandomUsernames = usernames.slice(0 ... -1).shuffle!.slice(0 ... 5)
 fiveRandomUsernames.each do |username|
   new_chat = Chat.create(name: '', isGroupChat: false, lastUpdatedAt: DateTime.now)
   new_chat.users << guestUser

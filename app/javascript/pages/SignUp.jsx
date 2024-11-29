@@ -77,10 +77,10 @@ export async function action({ request }) {
     });
 
     let { status } = await response.json()
-    console.log(status)
+    // console.log(status)
     // valid
     if (status.data?.user) {
-        console.log(status.message)
+        // console.log(status.message)
         const jwt = response.headers.get("Authorization").split(" ")[1]; // Extract Bearer token
         localStorage.setItem('user', JSON.stringify({
             username: status.data.user.username,

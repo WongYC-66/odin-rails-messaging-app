@@ -53,7 +53,7 @@ export default function Modal(props) {
         const { status : statusId } = await responseId.json()
         if (statusId && statusId.data?.queryUser) {
             var selfUserId = statusId.data.queryUser.id
-            console.log(statusId)
+            // console.log(statusId)
         } else {
             return console.error(statusId.message)
         }
@@ -72,7 +72,7 @@ export default function Modal(props) {
         // if no error, redirect to corresponding chat window
 
         const { status } = await response.json()
-        console.log(status)
+        // console.log(status)
         if (status && status.data?.chat) {
             let chat = status.data.chat
             setUserSelection({

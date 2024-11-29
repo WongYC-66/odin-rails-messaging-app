@@ -22,4 +22,8 @@ class User < ApplicationRecord
       email: self.email
      }
   end
+
+  def update_last_login!
+    update!(lastloginat: DateTime.now)
+  end
 end
