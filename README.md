@@ -40,6 +40,7 @@ Full Stack Ruby on Rails : https://odin-rails-messaging-app.onrender.com/
 1. Clone the repo
 1. cd odin-rails-messaging-app
 1. bundle install
+1. yarn install
 1. Create .env file like .env-sample
 1. rails db:migrate:reset
 1. rails db:seed
