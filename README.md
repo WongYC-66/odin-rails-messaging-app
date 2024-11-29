@@ -45,8 +45,7 @@ Full Stack Ruby on Rails : https://odin-rails-messaging-app.onrender.com/
 1. rails db:seed
 1. ./bin/dev
 1. visit at http://localhost:3000
-
-
+1. update /app/javascript/layout/API_URL.jsx to ur server domain
 
 
 # Source:
