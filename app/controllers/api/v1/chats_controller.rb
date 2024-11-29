@@ -6,20 +6,15 @@ class Api::V1::ChatsController < ApplicationController
       all_chats = Chat
       .joins(:users)
       .where(users: { id: current_user.id })
+      .preload(:users)
+      .preload(messages: [ :user ])
       .distinct
-      .includes(:messages)
       .order(lastUpdatedAt: :desc)
-      # .includes(:users, :messages)
-
-      # Sort messages dynamically in each chat
-      all_chats.each do |chat|
-        chat.messages = chat.messages.order(created_at: :desc)  # Sort messages by created_at DESC
-      end
 
       render json: {
         status: {
           code: 200, message: "Retrieve all chats where user involved successfully.",
-          data: { allChats: all_chats }
+          data: { allChats: all_chats.as_json }
         }
       }, status: :ok
     else
@@ -74,11 +69,14 @@ class Api::V1::ChatsController < ApplicationController
 
   def show
     if hasValidJWT
-      chat = Chat.find_by(id: params[:chat_id])
+      chat = Chat
+       .preload(messages: [ :user ])
+       .find_by(id: params[:chat_id])
+
       render json: {
         status: {
           code: 200, message: "Retrieve one chat successfully.",
-          data: { chat: chat }
+          data: { chat: chat.as_json_asc_messages }
         }
       }, status: :ok
     else

@@ -6,7 +6,7 @@ class Message < ApplicationRecord
     {
       text: self.text,
       timestamp: self.created_at,
-      user: user
+      user: self.user
     }
   end
 end

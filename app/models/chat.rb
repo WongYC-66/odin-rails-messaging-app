@@ -11,7 +11,18 @@ class Chat < ApplicationRecord
       isGroupChat: self.isGroupChat,
       lastUpdatedAt: self.lastUpdatedAt,
       users: self.users,
-      messages: self.messages
+      messages: self.messages.sort_by(&:created_at).reverse
+    }
+  end
+
+  def as_json_asc_messages(_options = {})
+    {
+      id: self.id,
+      name: self.name,
+      isGroupChat: self.isGroupChat,
+      lastUpdatedAt: self.lastUpdatedAt,
+      users: self.users,
+      messages: self.messages.sort_by(&:created_at)
     }
   end
 end
